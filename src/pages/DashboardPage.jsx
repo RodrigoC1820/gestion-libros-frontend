@@ -1,15 +1,5 @@
-import {
-  Book,
-  MenuBook,
-  People,
-} from '@mui/icons-material'
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-} from '@mui/material'
+import {Book,MenuBook,People,} from '@mui/icons-material'
+import {Box,Card,CardContent,Grid,Typography,} from '@mui/material'
 
 const tarjetas = [
   {

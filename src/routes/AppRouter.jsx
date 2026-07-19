@@ -8,11 +8,21 @@ import DashboardLayout from '../layouts/DashboardLayout'
 import AutoresPage from '../pages/AutoresPage'
 import DashboardPage from '../pages/DashboardPage'
 import LibrosPage from '../pages/LibrosPage'
+import LoginPage from '../pages/LoginPage'
+import ProtectedRoute from './ProtectedRoute'
 
 const router = createBrowserRouter([
   {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
     path: '/',
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

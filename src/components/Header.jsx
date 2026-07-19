@@ -5,12 +5,19 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+
+import { useAuth } from '../context/AuthContext'
 
 const drawerWidth = 240
 
 function Header() {
+  const navigate = useNavigate()
+  const { cerrarSesion } = useAuth()
+
   const handleLogout = () => {
-    console.log('Cerrar sesión')
+    cerrarSesion()
+    navigate('/login')
   }
 
   return (
