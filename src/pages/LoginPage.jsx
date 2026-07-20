@@ -1,10 +1,9 @@
 import { LockOutlined } from '@mui/icons-material'
-import {Alert,Avatar,Box,Button,CircularProgress,Container,Paper,TextField,Typography,} from '@mui/material'
+import { Alert, Avatar, Box, Button, CircularProgress, Container, Paper, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { iniciarSesion } from '../services/authService'
 import { useAuth } from '../context/AuthContext'
-
+import { iniciarSesion } from '../services/authService'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -46,27 +45,25 @@ function LoginPage() {
 
       iniciarSesionLocal(datosToken)
 
-      navigate('/dashboard')
-
+      navigate('/admin/dashboard')
     } catch (errorPeticion) {
-  console.error('Error completo:', errorPeticion)
-  console.error('Estado:', errorPeticion.response?.status)
-  console.error('Respuesta:', errorPeticion.response?.data)
+      console.error('Error completo:', errorPeticion)
+      console.error('Estado:', errorPeticion.response?.status)
+      console.error('Respuesta:', errorPeticion.response?.data)
 
-  if (errorPeticion.response?.status === 400) {
-    setError(
-      errorPeticion.response?.data?.error_description ||
-      'Usuario o contraseña incorrectos.',
-    )
-  } else if (errorPeticion.response?.status === 401) {
-    setError('El Client ID o el Client Secret de OAuth2 no son válidos.')
-  } else if (errorPeticion.code === 'ERR_NETWORK') {
-    setError('No se pudo conectar con el servidor.')
-  } else {
-    setError('No fue posible iniciar sesión.')
-  }
-}
-    finally {
+      if (errorPeticion.response?.status === 400) {
+        setError(
+          errorPeticion.response?.data?.error_description ||
+            'Usuario o contraseña incorrectos.',
+        )
+      } else if (errorPeticion.response?.status === 401) {
+        setError('El Client ID o el Client Secret de OAuth2 no son válidos.')
+      } else if (errorPeticion.code === 'ERR_NETWORK') {
+        setError('No se pudo conectar con el servidor.')
+      } else {
+        setError('No fue posible iniciar sesión.')
+      }
+    } finally {
       setCargando(false)
     }
   }

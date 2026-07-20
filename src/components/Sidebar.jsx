@@ -22,17 +22,17 @@ const opciones = [
   {
     texto: 'Dashboard',
     icono: <Dashboard />,
-    ruta: '/dashboard',
+    ruta: '/admin/dashboard',
   },
   {
     texto: 'Autores',
     icono: <People />,
-    ruta: '/autores',
+    ruta: '/admin/autores',
   },
   {
     texto: 'Libros',
     icono: <MenuBook />,
-    ruta: '/libros',
+    ruta: '/admin/libros',
   },
 ]
 

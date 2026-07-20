@@ -1,11 +1,7 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from 'react-router-dom'
-
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import DashboardLayout from '../layouts/DashboardLayout'
 import AutoresPage from '../pages/AutoresPage'
+import CatalogoPage from '../pages/CatalogoPage'
 import DashboardPage from '../pages/DashboardPage'
 import LibrosPage from '../pages/LibrosPage'
 import LoginPage from '../pages/LoginPage'
@@ -18,6 +14,30 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
+    element: <Navigate to="/catalogo" replace />,
+  },
+  {
+    path: '/catalogo',
+    element: <CatalogoPage />,
+  },
+  {
+    path: '/categorias',
+    element: <div>Categorías en construcción</div>,
+  },
+  {
+    path: '/libros/:id',
+    element: <div>Detalle del libro en construcción</div>,
+  },
+  {
+    path: '/favoritos',
+    element: <div>Favoritos en construcción</div>,
+  },
+  {
+    path: '/historial',
+    element: <div>Historial en construcción</div>,
+  },
+  {
+    path: '/admin',
     element: (
       <ProtectedRoute>
         <DashboardLayout />
@@ -26,7 +46,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboard" replace />,
+        element: <Navigate to="/admin/dashboard" replace />,
       },
       {
         path: 'dashboard',
@@ -41,6 +61,10 @@ const router = createBrowserRouter([
         element: <LibrosPage />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <Navigate to="/catalogo" replace />,
   },
 ])
 
