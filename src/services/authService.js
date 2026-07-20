@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
+const AUTH_URL = import.meta.env.VITE_AUTH_URL
 const CLIENT_ID = import.meta.env.VITE_OAUTH_CLIENT_ID
 const CLIENT_SECRET = import.meta.env.VITE_OAUTH_CLIENT_SECRET
 
@@ -14,7 +14,7 @@ const iniciarSesion = async (username, password) => {
   datos.append('client_secret', CLIENT_SECRET)
 
   const respuesta = await axios.post(
-    `${API_URL}/o/token/`,
+    `${AUTH_URL}/o/token/`,
     datos,
     {
       headers: {

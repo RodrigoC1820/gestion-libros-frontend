@@ -91,20 +91,22 @@ function AutorFormDialog({
             }}
           />
 
-          <TextField
-            label="Fecha de nacimiento"
-            name="fecha_nacimiento"
-            type="date"
-            value={formulario.fecha_nacimiento}
-            onChange={onChange}
-            fullWidth
-            disabled={guardando}
-            error={Boolean(errores.fecha_nacimiento)}
-            helperText={errores.fecha_nacimiento}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+         <TextField
+          label="Fecha de nacimiento"
+          name="fecha_nacimiento"
+          type="date"
+          value={formulario.fecha_nacimiento}
+          onChange={onChange}
+          fullWidth
+          disabled={guardando}
+          error={Boolean(errores.fecha_nacimiento)}
+          helperText={errores.fecha_nacimiento}
+          slotProps={{
+           inputLabel: {
+            shrink: true,
+    },
+  }}
+/>
 
           <TextField
             label="Biografía"
