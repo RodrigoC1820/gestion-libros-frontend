@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import DashboardLayout from '../layouts/DashboardLayout'
 import AutoresPage from '../pages/AutoresPage'
+import AutoresPublicPage from '../pages/AutoresPublicPage'
 import CatalogoPage from '../pages/CatalogoPage'
 import DashboardPage from '../pages/DashboardPage'
 import LibrosPage from '../pages/LibrosPage'
@@ -19,6 +20,14 @@ const router = createBrowserRouter([
   {
     path: '/catalogo',
     element: <CatalogoPage />,
+  },
+  {
+    path: '/autores',
+    element: <AutoresPublicPage />,
+  },
+  {
+    path: '/autores/:id',
+    element: <div>Detalle del autor en construcción</div>,
   },
   {
     path: '/categorias',

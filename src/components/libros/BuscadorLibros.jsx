@@ -26,16 +26,17 @@ function BuscadorLibros({ onBuscar }) {
   return (
     <Paper
       component="form"
-      elevation={2}
+      elevation={3}
       onSubmit={handleSubmit}
       sx={{
+        width: '100%',
+        maxWidth: 760,
         display: 'flex',
         alignItems: 'center',
         gap: 1,
-        mt: 4,
         p: 1,
         borderRadius: 3,
-        maxWidth: 750,
+        backgroundColor: 'background.paper',
       }}
     >
       <TextField
@@ -46,7 +47,19 @@ function BuscadorLibros({ onBuscar }) {
         onChange={handleChange}
         slotProps={{
           input: {
-            startAdornment: <Search sx={{ mr: 1, color: 'text.secondary' }} />,
+            startAdornment: (
+              <Search
+                sx={{
+                  mr: 1,
+                  color: 'text.secondary',
+                }}
+              />
+            ),
+          },
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: 'background.paper',
           },
         }}
       />
@@ -55,8 +68,12 @@ function BuscadorLibros({ onBuscar }) {
         type="submit"
         variant="contained"
         sx={{
-          px: 3,
+          minWidth: {
+            xs: 90,
+            sm: 115,
+          },
           height: 40,
+          px: 3,
         }}
       >
         Buscar

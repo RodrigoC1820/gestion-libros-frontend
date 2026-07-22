@@ -1,4 +1,4 @@
-import { Login, MenuBook } from '@mui/icons-material'
+import { Login, MenuBook, People } from '@mui/icons-material'
 import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
@@ -34,7 +34,15 @@ function PublicHeader() {
             }}
           >
             <Button color="inherit" onClick={() => navigate('/catalogo')}>
-              Catálogo
+              Libros
+            </Button>
+
+            <Button
+              color="inherit"
+              startIcon={<People />}
+              onClick={() => navigate('/autores')}
+            >
+              Autores
             </Button>
 
             <Button color="inherit" onClick={() => navigate('/categorias')}>
