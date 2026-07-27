@@ -1,71 +1,89 @@
-import { AutoStories, Category, People, Search } from '@mui/icons-material'
-import { Box, Button, Container, Paper, Typography } from '@mui/material'
-import { useMemo, useState } from 'react'
+import {
+  AutoStories,
+  Category,
+  People,
+  Search,
+} from '@mui/icons-material'
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Paper,
+  Typography,
+} from '@mui/material'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import BuscadorLibros from '../components/libros/BuscadorLibros'
 import LibroCard from '../components/libros/LibroCard'
 import PublicHeader from '../components/PublicHeader'
+import { obtenerLibrosDestacados } from '../services/libroService'
 
-const librosTemporales = [
-  {
-    id: 1,
-    titulo: 'Introducción a la programación',
-    autor_nombre: 'Carlos Ramírez',
-    genero: 'Tecnología',
-    isbn: '978000000001',
-    disponible: true,
-  },
-  {
-    id: 2,
-    titulo: 'Historia del Ecuador',
-    autor_nombre: 'María Andrade',
-    genero: 'Historia',
-    isbn: '978000000002',
-    disponible: true,
-  },
-  {
-    id: 3,
-    titulo: 'Fundamentos de filosofía',
-    autor_nombre: 'Luis Herrera',
-    genero: 'Filosofía',
-    isbn: '978000000003',
-    disponible: false,
-  },
-  {
-    id: 4,
-    titulo: 'Relatos de una ciudad',
-    autor_nombre: 'Ana Torres',
-    genero: 'Novela',
-    isbn: '978000000004',
-    disponible: true,
-  },
-]
 
 function CatalogoPage() {
   const navigate = useNavigate()
+
   const [busqueda, setBusqueda] = useState('')
+  const [librosDestacados, setLibrosDestacados] = useState([])
+  const [cargando, setCargando] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const cargarLibrosDestacados = async () => {
+      try {
+        setCargando(true)
+        setError('')
+
+        const datos = await obtenerLibrosDestacados()
+
+        if (Array.isArray(datos)) {
+          setLibrosDestacados(datos)
+        } else if (Array.isArray(datos?.results)) {
+          setLibrosDestacados(datos.results)
+        } else {
+          setLibrosDestacados([])
+        }
+      } catch (errorPeticion) {
+        console.error(
+          'Error al cargar libros destacados:',
+          errorPeticion,
+        )
+
+        setError(
+          'No se pudieron cargar los libros destacados. '
+          + 'Verifica que el backend esté encendido.',
+        )
+      } finally {
+        setCargando(false)
+      }
+    }
+
+    cargarLibrosDestacados()
+  }, [])
 
   const librosFiltrados = useMemo(() => {
     const texto = busqueda.toLowerCase().trim()
 
     if (!texto) {
-      return librosTemporales
+      return librosDestacados
     }
 
-    return librosTemporales.filter((libro) => {
+    return librosDestacados.filter((libro) => {
       const titulo = libro.titulo?.toLowerCase() || ''
       const autor = libro.autor_nombre?.toLowerCase() || ''
       const genero = libro.genero?.toLowerCase() || ''
       const isbn = libro.isbn?.toLowerCase() || ''
 
       return (
-        titulo.includes(texto) ||
-        autor.includes(texto) ||
-        genero.includes(texto) ||
-        isbn.includes(texto)
+        titulo.includes(texto)
+        || autor.includes(texto)
+        || genero.includes(texto)
+        || isbn.includes(texto)
       )
     })
-  }, [busqueda])
+  }, [busqueda, librosDestacados])
 
   const handleBuscar = (texto) => {
     setBusqueda(texto)
@@ -75,12 +93,16 @@ function CatalogoPage() {
     navigate(`/libros/${id}`)
   }
 
+  const handleIrALibros = () => {
+    navigate('/libros')
+  }
+
   const opcionesExplorar = [
     {
       titulo: 'Libros',
       descripcion: 'Explora nuestro catálogo de libros disponibles.',
       icono: <AutoStories sx={{ fontSize: 44 }} />,
-      ruta: '/catalogo',
+      ruta: '/libros',
     },
     {
       titulo: 'Autores',
@@ -107,7 +129,8 @@ function CatalogoPage() {
 
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #5D4037 0%, #8D6E63 100%)',
+          background:
+            'linear-gradient(135deg, #5D4037 0%, #8D6E63 100%)',
           color: 'white',
           py: {
             xs: 5,
@@ -154,8 +177,8 @@ function CatalogoPage() {
                 color: 'rgba(255, 255, 255, 0.88)',
               }}
             >
-              Descubre nuevas historias, explora diferentes categorías y conoce
-              a los autores disponibles en nuestra biblioteca.
+              Descubre nuevas historias, explora diferentes categorías
+              y conoce a los autores disponibles en nuestra biblioteca.
             </Typography>
 
             <Box
@@ -182,7 +205,8 @@ function CatalogoPage() {
           </Typography>
 
           <Typography color="text.secondary" sx={{ mt: 1 }}>
-            Accede rápidamente a las principales secciones de la biblioteca.
+            Accede rápidamente a las principales secciones de la
+            biblioteca.
           </Typography>
         </Box>
 
@@ -206,7 +230,8 @@ function CatalogoPage() {
                 cursor: 'pointer',
                 border: '1px solid',
                 borderColor: 'rgba(109, 76, 65, 0.15)',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                transition:
+                  'transform 0.25s ease, box-shadow 0.25s ease',
                 '&:hover': {
                   transform: 'translateY(-6px)',
                   boxShadow: 6,
@@ -261,13 +286,18 @@ function CatalogoPage() {
           >
             <Box>
               <Typography variant="h3">
-                {busqueda ? 'Resultados de búsqueda' : 'Libros destacados'}
+                {busqueda
+                  ? 'Resultados de búsqueda'
+                  : 'Libros destacados'}
               </Typography>
 
               <Typography color="text.secondary" sx={{ mt: 1 }}>
                 {busqueda
                   ? `Resultados encontrados para: ${busqueda}`
-                  : 'Conoce algunos de los libros disponibles en nuestra biblioteca.'}
+                  : (
+                    'Conoce algunos de los libros disponibles '
+                    + 'en nuestra biblioteca.'
+                  )}
               </Typography>
             </Box>
 
@@ -275,14 +305,44 @@ function CatalogoPage() {
               <Button
                 variant="outlined"
                 endIcon={<Search />}
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={handleIrALibros}
               >
                 Buscar libros
               </Button>
             )}
           </Box>
 
-          {librosFiltrados.length > 0 ? (
+          {cargando && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                py: 8,
+                gap: 2,
+              }}
+            >
+              <CircularProgress />
+
+              <Typography color="text.secondary">
+                Cargando libros destacados...
+              </Typography>
+            </Box>
+          )}
+
+          {!cargando && error && (
+            <Alert
+              severity="error"
+              sx={{
+                mb: 3,
+              }}
+            >
+              {error}
+            </Alert>
+          )}
+
+          {!cargando && !error && librosFiltrados.length > 0 && (
             <Box
               sx={{
                 display: 'grid',
@@ -303,26 +363,35 @@ function CatalogoPage() {
                 />
               ))}
             </Box>
-          ) : (
-            <Paper
-              elevation={0}
-              sx={{
-                py: 7,
-                px: 3,
-                textAlign: 'center',
-                border: '1px dashed',
-                borderColor: 'primary.light',
-              }}
-            >
-              <Typography variant="h5">
-                No se encontraron libros
-              </Typography>
-
-              <Typography color="text.secondary" sx={{ mt: 1 }}>
-                Prueba con otro título, autor, ISBN o género.
-              </Typography>
-            </Paper>
           )}
+
+          {!cargando
+            && !error
+            && librosFiltrados.length === 0 && (
+              <Paper
+                elevation={0}
+                sx={{
+                  py: 7,
+                  px: 3,
+                  textAlign: 'center',
+                  border: '1px dashed',
+                  borderColor: 'primary.light',
+                }}
+              >
+                <Typography variant="h5">
+                  No se encontraron libros
+                </Typography>
+
+                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                  {busqueda
+                    ? (
+                      'Prueba con otro título, autor, ISBN '
+                      + 'o género.'
+                    )
+                    : 'Todavía no existen libros para mostrar.'}
+                </Typography>
+              </Paper>
+            )}
         </Box>
       </Container>
     </Box>

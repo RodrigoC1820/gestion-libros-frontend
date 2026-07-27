@@ -1,12 +1,21 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom'
+
 import DashboardLayout from '../layouts/DashboardLayout'
 import AutoresPage from '../pages/AutoresPage'
 import AutoresPublicPage from '../pages/AutoresPublicPage'
 import CatalogoPage from '../pages/CatalogoPage'
 import DashboardPage from '../pages/DashboardPage'
 import LibrosPage from '../pages/LibrosPage'
+import LibrosPublicPage from '../pages/LibrosPublicPage'
 import LoginPage from '../pages/LoginPage'
 import ProtectedRoute from './ProtectedRoute'
+import LibroDetallePage from '../pages/LibroDetallePage'
+import CategoriasPage from '../pages/CategoriasPage'
+import AutorDetallePage from '../pages/AutorDetallePage'
 
 const router = createBrowserRouter([
   {
@@ -22,20 +31,24 @@ const router = createBrowserRouter([
     element: <CatalogoPage />,
   },
   {
+    path: '/libros',
+    element: <LibrosPublicPage />,
+  },
+  {
     path: '/autores',
     element: <AutoresPublicPage />,
   },
   {
-    path: '/autores/:id',
-    element: <div>Detalle del autor en construcción</div>,
+  path: '/autores/:id',
+  element: <AutorDetallePage />,
   },
   {
-    path: '/categorias',
-    element: <div>Categorías en construcción</div>,
+  path: '/categorias',
+  element: <CategoriasPage />,
   },
   {
-    path: '/libros/:id',
-    element: <div>Detalle del libro en construcción</div>,
+  path: '/libros/:id',
+  element: <LibroDetallePage />,
   },
   {
     path: '/favoritos',
